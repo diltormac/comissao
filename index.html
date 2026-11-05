@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard de Comissões</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <style>
+      body { font-family: 'Inter', sans-serif; background-color: #f9fafb; }
+    </style>
+  </head>
+  <body class="p-6 md:p-10 text-gray-800">
+    
+    <div class="max-w-5xl mx-auto space-y-8">
+      
+      <!-- Cabeçalho e Filtros -->
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-4 border-b border-gray-200">
+        <div>
+          <h1 class="text-2xl font-semibold text-gray-900">Relatório de Comissões</h1>
+          <p class="text-sm text-gray-500 mt-1">Selecione o período para calcular os repasses.</p>
+        </div>
+        
+        <div class="flex items-center gap-3 bg-white p-2 rounded-lg border border-gray-200 shadow-sm">
+          <input type="date" id="dataInicio" class="border-none bg-transparent text-sm text-gray-700 outline-none focus:ring-0 cursor-pointer" />
+          <span class="text-gray-400 text-sm">-</span>
+          <input type="date" id="dataFim" class="border-none bg-transparent text-sm text-gray-700 outline-none focus:ring-0 cursor-pointer" />
+          <button id="btnFiltrar" class="bg-gray-900 hover:bg-gray-800 text-white text-sm font-medium px-4 py-1.5 rounded-md transition-colors ml-2">
+            Aplicar
+          </button>
+        </div>
+      </div>
+
+      <!-- Painel Osmar -->
+      <section>
+        <div class="flex items-center gap-2 mb-3">
+          <i class="fa-solid fa-user-tie text-gray-400"></i>
+          <h2 class="text-base font-semibold text-gray-800">Repasse - Osmar</h2>
+        </div>
+        
+        <!-- Grid de Cards do Osmar -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          
+          <!-- Alinhamento -->
+          <div class="bg-white rounded-lg border border-gray-200 p-5 flex justify-between items-center">
+            <div>
+              <p class="text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Alinhamento</p>
+              <p id="osmarAlinhamento" class="text-2xl font-semibold text-gray-900">0</p>
+            </div>
+            <div class="text-gray-300">
+              <i class="fa-solid fa-car-side text-2xl"></i>
+            </div>
+          </div>
+
+          <!-- Camber -->
+          <div class="bg-white rounded-lg border border-gray-200 p-5 flex justify-between items-center">
+            <div>
+              <p class="text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Camber</p>
+              <p id="osmarCamber" class="text-2xl font-semibold text-gray-900">0</p>
+            </div>
+            <div class="text-gray-300">
+              <i class="fa-solid fa-sliders text-2xl"></i>
+            </div>
+          </div>
+
+          <!-- Caster -->
+          <div class="bg-white rounded-lg border border-gray-200 p-5 flex justify-between items-center">
+            <div>
+              <p class="text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Caster</p>
+              <p id="osmarCaster" class="text-2xl font-semibold text-gray-900">0</p>
+            </div>
+            <div class="text-gray-300">
+              <i class="fa-solid fa-gauge-high text-2xl"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Total Osmar -->
+        <div class="bg-white rounded-lg border border-gray-200 mt-4 p-6 flex flex-col md:flex-row items-center justify-between">
+          <div>
+            <p class="text-sm font-medium text-gray-600 mb-1">Total a pagar (Osmar)</p>
+            <div class="flex items-baseline gap-1">
+              <span class="text-lg text-gray-500 font-medium">R$</span>
+              <p id="osmarComissaoTotal" class="text-3xl font-bold text-gray-900">0,00</p>
+            </div>
+          </div>
+          <div class="mt-4 md:mt-0 text-right">
+            <p class="text-xs text-gray-400 font-medium">Regra: Soma dos serviços × R$ 10,00</p>
+          </div>
+        </div>
+      </section>
+
+      <hr class="border-gray-200 my-8" />
+
+      <!-- Painel Gustavo -->
+      <section>
+        <div class="flex items-center gap-2 mb-3">
+          <i class="fa-solid fa-wrench text-gray-400"></i>
+          <h2 class="text-base font-semibold text-gray-800">Repasse - Gustavo</h2>
+        </div>
+        
+        <!-- Grid de Cards do Gustavo -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          
+          <!-- Mecânicas -->
+          <div class="bg-white rounded-lg border border-gray-200 p-5 flex justify-between items-center">
+            <div>
+              <p class="text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Mecânicas Realizadas</p>
+              <p id="gustavoQtdMecanica" class="text-2xl font-semibold text-gray-900">0</p>
+            </div>
+            <div class="text-gray-300">
+              <i class="fa-solid fa-wrench text-2xl"></i>
+            </div>
+          </div>
+
+          <!-- Faturamento -->
+          <div class="bg-white rounded-lg border border-gray-200 p-5 flex justify-between items-center">
+            <div>
+              <p class="text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Faturamento Bruto (Mecânica)</p>
+              <div class="flex items-baseline gap-1">
+                <span class="text-sm text-gray-500 font-medium">R$</span>
+                <p id="gustavoBruto" class="text-2xl font-semibold text-gray-900">0,00</p>
+              </div>
+            </div>
+            <div class="text-gray-300">
+              <i class="fa-solid fa-cash-register text-2xl"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Total Gustavo -->
+        <div class="bg-white rounded-lg border border-gray-200 p-6 flex flex-col md:flex-row items-center justify-between">
+          <div>
+            <p class="text-sm font-medium text-gray-600 mb-1">Total a pagar (Gustavo)</p>
+            <div class="flex items-baseline gap-1">
+              <span class="text-lg text-emerald-600 font-medium">R$</span>
+              <p id="gustavoComissao" class="text-3xl font-bold text-emerald-600">0,00</p>
+            </div>
+          </div>
+          <div class="mt-4 md:mt-0 text-right">
+            <p class="text-xs text-gray-400 font-medium">Regra: 30% do faturamento bruto</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Mensagem de Erro -->
+      <div id="mensagemStatus" class="hidden text-sm text-red-600 bg-red-50 border border-red-200 p-3 rounded-lg text-center"></div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <script>
+      const supabaseUrl = "https://kiiswukzwwoznkgjyaod.supabase.co";
+      const supabaseKey = "sb_publishable_WPRvraB-40Fz1RuKbd5bRg_3tGvyAxg";
+      const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+      const inpInicio = document.getElementById("dataInicio");
+      const inpFim = document.getElementById("dataFim");
+      const btnFiltrar = document.getElementById("btnFiltrar");
+      const msgStatus = document.getElementById("mensagemStatus");
+
+      const elOsmarAlinhamento = document.getElementById("osmarAlinhamento");
+      const elOsmarCamber = document.getElementById("osmarCamber");
+      const elOsmarCaster = document.getElementById("osmarCaster");
+      const elOsmarComissaoTotal = document.getElementById("osmarComissaoTotal");
+
+      const elGustavoComissao = document.getElementById("gustavoComissao");
+      const elGustavoBruto = document.getElementById("gustavoBruto");
+      const elGustavoQtdMecanica = document.getElementById("gustavoQtdMecanica");
+
+      const hoje = new Date();
+      inpInicio.value = new Date(hoje.getFullYear(), hoje.getMonth(), 1).toISOString().split("T")[0];
+      inpFim.value = new Date(hoje.getFullYear(), hoje.getMonth() + 1, 0).toISOString().split("T")[0];
+
+      async function carregarMetricas() {
+        btnFiltrar.innerHTML = 'Buscando...';
+        btnFiltrar.disabled = true;
+        msgStatus.classList.add("hidden");
+
+        try {
+          const { data, error } = await supabaseClient
+            .from("ordens_servico")
+            .select("itens_servicos")
+            .gte("created_at", `${inpInicio.value}T00:00:00`)
+            .lte("created_at", `${inpFim.value}T23:59:59`);
+
+          if (error) throw error;
+
+          let qtdAlinhamento = 0;
+          let qtdCamber = 0;
+          let qtdCaster = 0;
+          let valorMecanicaBruto = 0;
+          let qtdMecanicas = 0;
+
+          (data || []).forEach((os) => {
+            const itens = Array.isArray(os.itens_servicos) ? os.itens_servicos : [];
+            itens.forEach((item) => {
+              const nomeServico = String(item.servico || "").toUpperCase();
+              
+              if (nomeServico.includes("ALINHAMENTO")) qtdAlinhamento++;
+              if (nomeServico.includes("CAMBER")) qtdCamber++;
+              if (nomeServico.includes("CASTER")) qtdCaster++;
+
+              if (nomeServico.includes("MECANICA") || nomeServico.includes("MECÂNICA")) {
+                valorMecanicaBruto += Number(item.valor) || 0;
+                qtdMecanicas++;
+              }
+            });
+          });
+
+          elOsmarAlinhamento.textContent = qtdAlinhamento;
+          elOsmarCamber.textContent = qtdCamber;
+          elOsmarCaster.textContent = qtdCaster;
+
+          const qtdTotalOsmar = qtdAlinhamento + qtdCamber + qtdCaster;
+          const comissaoOsmar = qtdTotalOsmar * 10;
+          elOsmarComissaoTotal.textContent = comissaoOsmar.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+          const comissaoGustavo = valorMecanicaBruto * 0.30; 
+          
+          elGustavoComissao.textContent = comissaoGustavo.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+          elGustavoBruto.textContent = valorMecanicaBruto.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+          elGustavoQtdMecanica.textContent = qtdMecanicas;
+
+        } catch (err) {
+          console.error(err);
+          msgStatus.textContent = "Erro ao buscar os dados: " + err.message;
+          msgStatus.classList.remove("hidden");
+        } finally {
+          btnFiltrar.innerHTML = 'Aplicar';
+          btnFiltrar.disabled = false;
+        }
+      }
+
+      btnFiltrar.addEventListener("click", carregarMetricas);
+      carregarMetricas(); 
+    </script>
+  </body>
+</html>
