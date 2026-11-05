@@ -30,168 +30,507 @@
       input[type="date"]::-webkit-calendar-picker-indicator {
         filter: invert(0.7);
       }
+
+      /* ================= ESTILOS EXCLUSIVOS PARA O PDF (IMPRESSÃO) ================= */
+      @media print {
+        @page {
+          margin: 1.5cm;
+          size: A4 portrait;
+        }
+        body {
+          background: #ffffff !important;
+          color: #000000 !important;
+        }
+
+        /* Esconde a tela do dashboard e os containers de PDF não selecionados */
+        .tela-dashboard {
+          display: none !important;
+        }
+        .pdf-container {
+          display: none !important;
+        }
+
+        /* Mostra apenas o container de PDF que foi ativado */
+        .pdf-container.ativo {
+          display: block !important;
+        }
+
+        /* Estilos da tabela do PDF */
+        .pdf-tabela {
+          width: 100%;
+          border-collapse: collapse;
+          margin-bottom: 20px;
+          font-size: 12px;
+        }
+        .pdf-tabela th,
+        .pdf-tabela td {
+          border: 1px solid #000000;
+          padding: 8px;
+          text-align: left;
+        }
+        .pdf-tabela th {
+          background-color: #f3f4f6;
+          font-weight: bold;
+          text-transform: uppercase;
+        }
+        .pdf-header {
+          text-align: center;
+          margin-bottom: 20px;
+          border-bottom: 2px solid #000;
+          padding-bottom: 10px;
+        }
+        .pdf-header h1 {
+          font-size: 20px;
+          font-weight: bold;
+          margin: 0;
+          text-transform: uppercase;
+        }
+        .pdf-header p {
+          font-size: 13px;
+          margin: 5px 0 0 0;
+        }
+
+        /* Estilos do Relatório Simples */
+        .relatorio-simples-caixa {
+          border: 2px solid #000;
+          padding: 20px;
+          margin-top: 20px;
+        }
+        .relatorio-simples-linha {
+          display: flex;
+          justify-content: space-between;
+          border-bottom: 1px dashed #ccc;
+          padding: 8px 0;
+          font-size: 14px;
+        }
+        .relatorio-simples-linha:last-child {
+          border-bottom: none;
+        }
+        .relatorio-simples-total {
+          font-size: 18px;
+          font-weight: bold;
+          border-top: 2px solid #000;
+          padding-top: 10px;
+          margin-top: 10px;
+          display: flex;
+          justify-content: space-between;
+        }
+      }
+
+      /* Esconde os containers de PDF na tela normal */
+      .pdf-container {
+        display: none;
+      }
     </style>
   </head>
   <body class="text-slate-200">
-    <div class="max-w-5xl mx-auto px-3 py-3 sm:py-4">
+    <!-- ================== TELA DO DASHBOARD (NORMAL) ================== -->
+    <div class="max-w-5xl mx-auto px-3 py-3 sm:py-4 tela-dashboard">
       <!-- Header compacto -->
-      <div class="card rounded-xl p-3 mb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+      <div
+        class="card rounded-xl p-3 mb-3 flex flex-col md:flex-row md:items-center justify-between gap-3 no-print"
+      >
         <div class="flex items-center gap-2.5">
-          <div class="w-9 h-9 rounded-lg bg-orange-500 flex items-center justify-center flex-shrink-0">
+          <div
+            class="w-9 h-9 rounded-lg bg-orange-500 flex items-center justify-center flex-shrink-0"
+          >
             <i class="fa-solid fa-car-burst text-white text-sm"></i>
           </div>
           <div>
-            <h1 class="text-base font-bold text-white leading-tight">OS Fácil</h1>
+            <h1 class="text-base font-bold text-white leading-tight">
+              OS Fácil
+            </h1>
             <p class="text-[11px] text-slate-500">Dashboard · Auto Center</p>
           </div>
         </div>
 
-        <div class="flex items-center gap-1.5 flex-wrap">
+        <div class="flex flex-wrap items-center gap-1.5">
           <input
             type="date"
             id="dataInicio"
-            class="bg-[#1e1e22] border border-white/10 rounded-lg px-2 py-1.5 text-xs text-slate-200 outline-none focus:border-orange-500 w-[118px]"
+            class="bg-[#1e1e22] border border-white/10 rounded-lg px-2 py-1.5 text-xs text-slate-200 outline-none focus:border-orange-500"
           />
           <span class="text-slate-600 text-[11px]">–</span>
           <input
             type="date"
             id="dataFim"
-            class="bg-[#1e1e22] border border-white/10 rounded-lg px-2 py-1.5 text-xs text-slate-200 outline-none focus:border-orange-500 w-[118px]"
+            class="bg-[#1e1e22] border border-white/10 rounded-lg px-2 py-1.5 text-xs text-slate-200 outline-none focus:border-orange-500"
           />
+
+          <select
+            id="filtroFuncionario"
+            class="bg-[#1e1e22] border border-white/10 rounded-lg px-2 py-1.5 text-xs text-slate-200 outline-none focus:border-orange-500 cursor-pointer"
+          >
+            <option value="todos">Todos</option>
+            <option value="osmar">Osmar</option>
+            <option value="gustavo">Gustavo</option>
+          </select>
+
           <button
             id="btnFiltrar"
             class="bg-orange-500 hover:bg-orange-600 text-white text-xs font-semibold px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition-colors"
           >
-            <i class="fa-solid fa-filter text-[10px]"></i>
-            Filtrar
+            <i class="fa-solid fa-filter text-[10px]"></i> Filtrar
+          </button>
+
+          <button
+            id="btnExportar"
+            class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition-colors"
+          >
+            <i class="fa-solid fa-file-csv text-[10px]"></i> CSV
+          </button>
+
+          <!-- BOTÃO DO RELATÓRIO SIMPLES -->
+          <button
+            id="btnRelatorioSimples"
+            class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition-colors"
+          >
+            <i class="fa-solid fa-file-lines text-[10px]"></i> Relatório
+          </button>
+
+          <button
+            id="btnImprimir"
+            class="bg-slate-700 hover:bg-slate-600 text-white text-xs font-semibold px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition-colors"
+          >
+            <i class="fa-solid fa-print text-[10px]"></i> Planilha PDF
           </button>
         </div>
       </div>
 
+      <div
+        id="avisoFiltro"
+        class="hidden text-center text-xs font-medium text-slate-400 mb-3 no-print"
+      ></div>
+
       <!-- OSMAR -->
-      <div class="mb-3">
+      <div id="painelOsmar" class="mb-3 painel-funcionario">
         <div class="flex items-center gap-2 mb-2">
           <i class="fa-solid fa-user-tie text-indigo-400 text-xs"></i>
-          <h2 class="text-xs font-semibold text-slate-400 uppercase tracking-wide">Osmar · Geometria</h2>
+          <h2
+            class="text-xs font-semibold text-slate-400 uppercase tracking-wide"
+          >
+            Osmar · Geometria
+          </h2>
         </div>
 
         <div class="grid grid-cols-3 gap-2 mb-2">
-          <div class="card rounded-xl p-2.5 sm:p-3 text-center">
-            <div class="w-8 h-8 rounded-lg bg-indigo-500/15 flex items-center justify-center mx-auto mb-1.5">
+          <div
+            class="card rounded-xl p-2.5 sm:p-3 text-center flex flex-col justify-center items-center"
+          >
+            <div
+              class="w-8 h-8 rounded-lg bg-indigo-500/15 flex items-center justify-center mx-auto mb-1.5"
+            >
               <i class="fa-solid fa-car-side text-indigo-400 text-sm"></i>
             </div>
-            <p class="text-[10px] text-slate-500 uppercase mb-0.5">Alinhamento</p>
-            <p id="osmarAlinhamento" class="text-xl sm:text-2xl font-bold text-white">0</p>
+            <p class="text-[10px] text-slate-500 uppercase mb-0.5">
+              Alinhamento
+            </p>
+            <p
+              id="osmarAlinhamento"
+              class="text-xl sm:text-2xl font-bold text-white"
+            >
+              0
+            </p>
           </div>
 
-          <div class="card rounded-xl p-2.5 sm:p-3 text-center">
-            <div class="w-8 h-8 rounded-lg bg-amber-500/15 flex items-center justify-center mx-auto mb-1.5">
+          <div
+            class="card rounded-xl p-2.5 sm:p-3 text-center flex flex-col justify-center items-center"
+          >
+            <div
+              class="w-8 h-8 rounded-lg bg-amber-500/15 flex items-center justify-center mx-auto mb-1.5"
+            >
               <i class="fa-solid fa-sliders text-amber-400 text-sm"></i>
             </div>
             <p class="text-[10px] text-slate-500 uppercase mb-0.5">Camber</p>
-            <p id="osmarCamber" class="text-xl sm:text-2xl font-bold text-white">0</p>
+            <p
+              id="osmarCamber"
+              class="text-xl sm:text-2xl font-bold text-white"
+            >
+              0
+            </p>
           </div>
 
-          <div class="card rounded-xl p-2.5 sm:p-3 text-center">
-            <div class="w-8 h-8 rounded-lg bg-emerald-500/15 flex items-center justify-center mx-auto mb-1.5">
+          <div
+            class="card rounded-xl p-2.5 sm:p-3 text-center flex flex-col justify-center items-center"
+          >
+            <div
+              class="w-8 h-8 rounded-lg bg-emerald-500/15 flex items-center justify-center mx-auto mb-1.5"
+            >
               <i class="fa-solid fa-gauge-high text-emerald-400 text-sm"></i>
             </div>
             <p class="text-[10px] text-slate-500 uppercase mb-0.5">Caster</p>
-            <p id="osmarCaster" class="text-xl sm:text-2xl font-bold text-white">0</p>
+            <p
+              id="osmarCaster"
+              class="text-xl sm:text-2xl font-bold text-white"
+            >
+              0
+            </p>
           </div>
         </div>
 
-        <div class="bg-indigo-600 rounded-xl px-3 py-2.5 flex items-center justify-between gap-2">
+        <div
+          class="bg-indigo-600 rounded-xl px-3 py-2.5 flex items-center justify-between gap-2"
+        >
           <div class="flex items-center gap-2 min-w-0">
-            <i class="fa-solid fa-money-bill-wave text-indigo-200 text-sm flex-shrink-0"></i>
+            <i
+              class="fa-solid fa-money-bill-wave text-indigo-200 text-sm flex-shrink-0"
+            ></i>
             <div class="min-w-0">
-              <p class="text-[10px] text-indigo-200 uppercase leading-none mb-0.5">Comissão Osmar</p>
+              <p
+                class="text-[10px] text-indigo-200 uppercase leading-none mb-0.5"
+              >
+                Comissão Osmar
+              </p>
               <p class="text-lg sm:text-xl font-bold text-white truncate">
                 R$ <span id="osmarComissaoTotal">0,00</span>
               </p>
             </div>
           </div>
-          <p class="text-[10px] text-indigo-200/80 whitespace-nowrap hidden xs:block">× R$ 10</p>
+          <p
+            class="text-[10px] text-indigo-200/80 whitespace-nowrap hidden xs:block"
+          >
+            × R$ 10
+          </p>
         </div>
       </div>
 
       <!-- GUSTAVO -->
-      <div>
+      <div id="painelGustavo" class="painel-funcionario">
         <div class="flex items-center gap-2 mb-2">
           <i class="fa-solid fa-wrench text-emerald-400 text-xs"></i>
-          <h2 class="text-xs font-semibold text-slate-400 uppercase tracking-wide">Gustavo · Mecânica</h2>
+          <h2
+            class="text-xs font-semibold text-slate-400 uppercase tracking-wide"
+          >
+            Gustavo · Mecânica
+          </h2>
         </div>
 
         <div class="grid grid-cols-2 gap-2 mb-2">
-          <div class="card rounded-xl p-2.5 sm:p-3">
+          <div
+            class="card rounded-xl p-2.5 sm:p-3 flex flex-col justify-center"
+          >
             <div class="flex items-center gap-2 mb-1.5">
-              <div class="w-8 h-8 rounded-lg bg-emerald-500/15 flex items-center justify-center flex-shrink-0">
-                <i class="fa-solid fa-screwdriver-wrench text-emerald-400 text-sm"></i>
+              <div
+                class="w-8 h-8 rounded-lg bg-emerald-500/15 flex items-center justify-center flex-shrink-0"
+              >
+                <i
+                  class="fa-solid fa-screwdriver-wrench text-emerald-400 text-sm"
+                ></i>
               </div>
-              <p class="text-[10px] text-slate-500 uppercase leading-tight">Mecânicas</p>
+              <p class="text-[10px] text-slate-500 uppercase leading-tight">
+                Mecânicas
+              </p>
             </div>
-            <p id="gustavoQtdMecanica" class="text-xl sm:text-2xl font-bold text-white">0</p>
+            <p
+              id="gustavoQtdMecanica"
+              class="text-xl sm:text-2xl font-bold text-white"
+            >
+              0
+            </p>
           </div>
 
-          <div class="card rounded-xl p-2.5 sm:p-3">
+          <div
+            class="card rounded-xl p-2.5 sm:p-3 flex flex-col justify-center"
+          >
             <div class="flex items-center gap-2 mb-1.5">
-              <div class="w-8 h-8 rounded-lg bg-slate-500/15 flex items-center justify-center flex-shrink-0">
+              <div
+                class="w-8 h-8 rounded-lg bg-slate-500/15 flex items-center justify-center flex-shrink-0"
+              >
                 <i class="fa-solid fa-receipt text-slate-400 text-sm"></i>
               </div>
-              <p class="text-[10px] text-slate-500 uppercase leading-tight">Faturamento</p>
+              <p class="text-[10px] text-slate-500 uppercase leading-tight">
+                Faturamento
+              </p>
             </div>
-            <p id="gustavoBruto" class="text-base sm:text-lg font-bold text-white">R$ 0,00</p>
+            <p
+              id="gustavoBruto"
+              class="text-base sm:text-lg font-bold text-white"
+            >
+              R$ 0,00
+            </p>
           </div>
         </div>
 
-        <div class="bg-emerald-600 rounded-xl px-3 py-2.5 flex items-center justify-between gap-2">
+        <div
+          class="bg-emerald-600 rounded-xl px-3 py-2.5 flex items-center justify-between gap-2"
+        >
           <div class="flex items-center gap-2 min-w-0">
-            <i class="fa-solid fa-money-bill-wave text-emerald-200 text-sm flex-shrink-0"></i>
+            <i
+              class="fa-solid fa-money-bill-wave text-emerald-200 text-sm flex-shrink-0"
+            ></i>
             <div class="min-w-0">
-              <p class="text-[10px] text-emerald-200 uppercase leading-none mb-0.5">Comissão Gustavo (30%)</p>
-              <p id="gustavoComissao" class="text-lg sm:text-xl font-bold text-white truncate">R$ 0,00</p>
+              <p
+                class="text-[10px] text-emerald-200 uppercase leading-none mb-0.5"
+              >
+                Comissão Gustavo (30%)
+              </p>
+              <p
+                id="gustavoComissao"
+                class="text-lg sm:text-xl font-bold text-white truncate"
+              >
+                R$ 0,00
+              </p>
             </div>
           </div>
-          <p class="text-[10px] text-emerald-200/80 whitespace-nowrap hidden xs:block">30%</p>
+          <p
+            class="text-[10px] text-emerald-200/80 whitespace-nowrap hidden xs:block"
+          >
+            30%
+          </p>
         </div>
       </div>
 
-      <!-- Status -->
-      <div id="mensagemStatus" class="mt-3 text-center text-xs font-medium hidden"></div>
+      <div
+        id="mensagemStatus"
+        class="mt-3 text-center text-xs font-medium hidden no-print"
+      ></div>
+    </div>
+
+    <!-- ================== CONTAINER 1: PLANILHA PDF ================== -->
+    <div class="pdf-container" id="pdfPlanilha">
+      <div class="pdf-header">
+        <h1>Relatório de Comissões</h1>
+        <p id="pdfPeriodo"></p>
+        <p id="pdfFuncionario"></p>
+      </div>
+
+      <h3 style="font-size: 14px; font-weight: bold; margin-bottom: 8px">
+        Resumo de Comissões
+      </h3>
+      <table class="pdf-tabela">
+        <thead>
+          <tr>
+            <th>Funcionário</th>
+            <th>Serviço / Métrica</th>
+            <th>Quantidade / Base</th>
+            <th>Regra de Cálculo</th>
+            <th>Valor a Receber</th>
+          </tr>
+        </thead>
+        <tbody id="pdfResumoTbody"></tbody>
+      </table>
+
+      <h3
+        style="
+          font-size: 14px;
+          font-weight: bold;
+          margin-bottom: 8px;
+          margin-top: 20px;
+        "
+      >
+        Detalhamento de Serviços
+      </h3>
+      <table class="pdf-tabela">
+        <thead>
+          <tr>
+            <th>Data</th>
+            <th>Serviço</th>
+            <th>Quantidade</th>
+            <th>Valor do Item (R$)</th>
+          </tr>
+        </thead>
+        <tbody id="pdfDetalhesTbody"></tbody>
+      </table>
+    </div>
+
+    <!-- ================== CONTAINER 2: RELATÓRIO SIMPLES PDF ================== -->
+    <div class="pdf-container" id="pdfRelatorioSimples">
+      <div class="pdf-header">
+        <h1>Recibo de Comissão</h1>
+        <p id="pdfPeriodoSimples"></p>
+        <p id="pdfFuncionarioSimples"></p>
+      </div>
+
+      <div class="relatorio-simples-caixa">
+        <div id="relatorioSimplesConteudo"></div>
+      </div>
+
+      <div style="margin-top: 50px; text-align: center">
+        <p style="font-size: 12px">
+          __________________________________________________
+        </p>
+        <p style="font-size: 12px; margin-top: 5px">
+          Assinatura do Funcionário
+        </p>
+      </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
       const supabaseUrl = "https://kiiswukzwwoznkgjyaod.supabase.co";
       const supabaseKey = "sb_publishable_WPRvraB-40Fz1RuKbd5bRg_3tGvyAxg";
-      const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+      const supabaseClient = window.supabase.createClient(
+        supabaseUrl,
+        supabaseKey,
+      );
 
       const inpInicio = document.getElementById("dataInicio");
       const inpFim = document.getElementById("dataFim");
+      const selFuncionario = document.getElementById("filtroFuncionario");
       const btnFiltrar = document.getElementById("btnFiltrar");
+      const btnExportar = document.getElementById("btnExportar");
+      const btnRelatorioSimples = document.getElementById(
+        "btnRelatorioSimples",
+      );
+      const btnImprimir = document.getElementById("btnImprimir");
       const msgStatus = document.getElementById("mensagemStatus");
+      const avisoFiltro = document.getElementById("avisoFiltro");
+
+      const painelOsmar = document.getElementById("painelOsmar");
+      const painelGustavo = document.getElementById("painelGustavo");
 
       const elOsmarAlinhamento = document.getElementById("osmarAlinhamento");
       const elOsmarCamber = document.getElementById("osmarCamber");
       const elOsmarCaster = document.getElementById("osmarCaster");
-      const elOsmarComissaoTotal = document.getElementById("osmarComissaoTotal");
+      const elOsmarComissaoTotal =
+        document.getElementById("osmarComissaoTotal");
       const elGustavoComissao = document.getElementById("gustavoComissao");
       const elGustavoBruto = document.getElementById("gustavoBruto");
-      const elGustavoQtdMecanica = document.getElementById("gustavoQtdMecanica");
+      const elGustavoQtdMecanica =
+        document.getElementById("gustavoQtdMecanica");
+
+      let dadosAtuaisPeriodo = null;
 
       const hoje = new Date();
-      inpInicio.value = new Date(hoje.getFullYear(), hoje.getMonth(), 1).toISOString().split("T")[0];
-      inpFim.value = new Date(hoje.getFullYear(), hoje.getMonth() + 1, 0).toISOString().split("T")[0];
+      inpInicio.value = new Date(hoje.getFullYear(), hoje.getMonth(), 1)
+        .toISOString()
+        .split("T")[0];
+      inpFim.value = new Date(hoje.getFullYear(), hoje.getMonth() + 1, 0)
+        .toISOString()
+        .split("T")[0];
+
+      function aplicarFiltroVisual() {
+        const func = selFuncionario.value;
+        if (func === "osmar") {
+          painelOsmar.style.display = "block";
+          painelGustavo.style.display = "none";
+          avisoFiltro.textContent = "Exibindo apenas o painel do Osmar.";
+          avisoFiltro.classList.remove("hidden");
+        } else if (func === "gustavo") {
+          painelOsmar.style.display = "none";
+          painelGustavo.style.display = "block";
+          avisoFiltro.textContent = "Exibindo apenas o painel do Gustavo.";
+          avisoFiltro.classList.remove("hidden");
+        } else {
+          painelOsmar.style.display = "block";
+          painelGustavo.style.display = "block";
+          avisoFiltro.classList.add("hidden");
+        }
+      }
 
       async function carregarMetricas() {
-        btnFiltrar.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-[10px]"></i>';
+        btnFiltrar.innerHTML =
+          '<i class="fa-solid fa-spinner fa-spin text-[10px]"></i>';
         btnFiltrar.disabled = true;
         msgStatus.classList.add("hidden");
+        dadosAtuaisPeriodo = null;
+
+        aplicarFiltroVisual();
 
         try {
           const { data, error } = await supabaseClient
             .from("ordens_servico")
-            .select("itens_servicos")
+            .select("itens_servicos, created_at")
             .gte("created_at", `${inpInicio.value}T00:00:00`)
             .lte("created_at", `${inpFim.value}T23:59:59`);
 
@@ -202,57 +541,290 @@
           let qtdCaster = 0;
           let valorMecanicaBruto = 0;
           let qtdMecanicas = 0;
+          let listaDetalhada = [];
 
           (data || []).forEach((os) => {
-            const itens = Array.isArray(os.itens_servicos) ? os.itens_servicos : [];
+            const itens = Array.isArray(os.itens_servicos)
+              ? os.itens_servicos
+              : [];
             itens.forEach((item) => {
               const nomeServico = String(item.servico || "").toUpperCase();
-              
-              // CORREÇÃO: Pega a quantidade real do item (se não existir, assume 1)
               const qtdItem = Number(item.quantidade) || 1;
-              
-              if (nomeServico.includes("ALINHAMENTO")) qtdAlinhamento += qtdItem;
-              if (nomeServico.includes("CAMBER")) qtdCamber += qtdItem;
-              if (nomeServico.includes("CASTER")) qtdCaster += qtdItem;
-              
-              if (nomeServico.includes("MECANICA") || nomeServico.includes("MECÂNICA")) {
+              let isComissionado = false;
+
+              if (nomeServico.includes("ALINHAMENTO")) {
+                qtdAlinhamento += qtdItem;
+                isComissionado = true;
+              }
+              if (nomeServico.includes("CAMBER")) {
+                qtdCamber += qtdItem;
+                isComissionado = true;
+              }
+              if (nomeServico.includes("CASTER")) {
+                qtdCaster += qtdItem;
+                isComissionado = true;
+              }
+              if (
+                nomeServico.includes("MECANICA") ||
+                nomeServico.includes("MECÂNICA")
+              ) {
                 valorMecanicaBruto += Number(item.valor) || 0;
                 qtdMecanicas += qtdItem;
+                isComissionado = true;
+              }
+
+              if (isComissionado) {
+                listaDetalhada.push({
+                  data: os.created_at,
+                  servico: item.servico,
+                  quantidade: qtdItem,
+                  valor: Number(item.valor) || 0,
+                });
               }
             });
           });
 
+          dadosAtuaisPeriodo = {
+            qtdAlinhamento,
+            qtdCamber,
+            qtdCaster,
+            comissaoOsmar: (qtdAlinhamento + qtdCamber + qtdCaster) * 10,
+            valorMecanicaBruto,
+            comissaoGustavo: valorMecanicaBruto * 0.3,
+            qtdMecanicas,
+            listaDetalhada,
+          };
+
           elOsmarAlinhamento.textContent = qtdAlinhamento;
           elOsmarCamber.textContent = qtdCamber;
           elOsmarCaster.textContent = qtdCaster;
-
-          const comissaoOsmar = (qtdAlinhamento + qtdCamber + qtdCaster) * 10;
-          elOsmarComissaoTotal.textContent = comissaoOsmar.toLocaleString("pt-BR", {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          });
-
-          const comissaoGustavo = valorMecanicaBruto * 0.3;
-          elGustavoComissao.textContent = comissaoGustavo.toLocaleString("pt-BR", {
-            style: "currency",
-            currency: "BRL",
-          });
-          elGustavoBruto.textContent = valorMecanicaBruto.toLocaleString("pt-BR", {
-            style: "currency",
-            currency: "BRL",
-          });
+          elOsmarComissaoTotal.textContent =
+            dadosAtuaisPeriodo.comissaoOsmar.toLocaleString("pt-BR", {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            });
+          elGustavoComissao.textContent =
+            dadosAtuaisPeriodo.comissaoGustavo.toLocaleString("pt-BR", {
+              style: "currency",
+              currency: "BRL",
+            });
+          elGustavoBruto.textContent = valorMecanicaBruto.toLocaleString(
+            "pt-BR",
+            { style: "currency", currency: "BRL" },
+          );
           elGustavoQtdMecanica.textContent = qtdMecanicas;
         } catch (err) {
           console.error(err);
           msgStatus.textContent = "Erro: " + err.message;
-          msgStatus.className = "mt-3 text-center text-xs font-medium text-red-400 block";
+          msgStatus.className =
+            "mt-3 text-center text-xs font-medium text-red-400 block";
         } finally {
-          btnFiltrar.innerHTML = '<i class="fa-solid fa-filter text-[10px]"></i> Filtrar';
+          btnFiltrar.innerHTML =
+            '<i class="fa-solid fa-filter text-[10px]"></i> Filtrar';
           btnFiltrar.disabled = false;
         }
       }
 
+      function exportarCSV() {
+        if (!dadosAtuaisPeriodo) {
+          alert("Filtre os dados antes.");
+          return;
+        }
+        const func = selFuncionario.value;
+        let csvContent = "RESUMO DE COMISSOES\n";
+        csvContent += `Periodo:;${inpInicio.value.split("-").reverse().join("/")} ate ${inpFim.value.split("-").reverse().join("/")}\n`;
+        csvContent += `Funcionario:;${func === "todos" ? "Todos" : func === "osmar" ? "Osmar" : "Gustavo"}\n\n`;
+
+        if (func === "todos" || func === "osmar") {
+          csvContent += "OSMAR (GEOMETRIA)\nServico;Quantidade\n";
+          csvContent += `Alinhamento;${dadosAtuaisPeriodo.qtdAlinhamento}\nCamber;${dadosAtuaisPeriodo.qtdCamber}\nCaster;${dadosAtuaisPeriodo.qtdCaster}\n`;
+          csvContent += `Comissao Total Osmar (x R$10);R$ ${dadosAtuaisPeriodo.comissaoOsmar.toFixed(2).replace(".", ",")}\n\n`;
+        }
+        if (func === "todos" || func === "gustavo") {
+          csvContent += "GUSTAVO (MECANICA)\nMetrica;Valor\n";
+          csvContent += `Mecanicas Realizadas;${dadosAtuaisPeriodo.qtdMecanicas}\nFaturamento Bruto;R$ ${dadosAtuaisPeriodo.valorMecanicaBruto.toFixed(2).replace(".", ",")}\n`;
+          csvContent += `Comissao Gustavo (30%);R$ ${dadosAtuaisPeriodo.comissaoGustavo.toFixed(2).replace(".", ",")}\n\n`;
+        }
+
+        let detalhesFiltrados = dadosAtuaisPeriodo.listaDetalhada;
+        if (func === "osmar")
+          detalhesFiltrados = detalhesFiltrados.filter(
+            (i) =>
+              i.servico.toUpperCase().includes("ALINHAMENTO") ||
+              i.servico.toUpperCase().includes("CAMBER") ||
+              i.servico.toUpperCase().includes("CASTER"),
+          );
+        if (func === "gustavo")
+          detalhesFiltrados = detalhesFiltrados.filter(
+            (i) =>
+              i.servico.toUpperCase().includes("MECANICA") ||
+              i.servico.toUpperCase().includes("MECÂNICA"),
+          );
+
+        csvContent +=
+          "DETALHAMENTO DOS SERVICOS COMISSIONADOS\nData;Servico;Quantidade;Valor do Item (R$)\n";
+        detalhesFiltrados.forEach((item) => {
+          csvContent += `${new Date(item.data).toLocaleDateString("pt-BR")};${item.servico};${item.quantidade};${item.valor.toFixed(2).replace(".", ",")}\n`;
+        });
+
+        const blob = new Blob(["\uFEFF" + csvContent], {
+          type: "text/csv;charset=utf-8;",
+        });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.setAttribute(
+          "download",
+          `Relatorio_Comissoes_${func}_${inpInicio.value}.csv`,
+        );
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+
+      // ================= IMPRESSÃO: PLANILHA DETALHADA =================
+      function imprimirPlanilha() {
+        if (!dadosAtuaisPeriodo) {
+          alert("Filtre os dados antes.");
+          return;
+        }
+
+        document
+          .querySelectorAll(".pdf-container")
+          .forEach((el) => el.classList.remove("ativo"));
+        document.getElementById("pdfPlanilha").classList.add("ativo");
+
+        const func = selFuncionario.value;
+        const dataFormatadaInicio = inpInicio.value
+          .split("-")
+          .reverse()
+          .join("/");
+        const dataFormatadaFim = inpFim.value.split("-").reverse().join("/");
+        document.getElementById("pdfPeriodo").textContent =
+          `Período: ${dataFormatadaInicio} até ${dataFormatadaFim}`;
+
+        let nomeFunc = "Todos os Funcionários";
+        if (func === "osmar") nomeFunc = "Osmar";
+        if (func === "gustavo") nomeFunc = "Gustavo";
+        document.getElementById("pdfFuncionario").textContent =
+          `Funcionário: ${nomeFunc}`;
+
+        let resumoHtml = "";
+        const fmt = (val) =>
+          val.toLocaleString("pt-BR", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          });
+
+        if (func === "todos" || func === "osmar") {
+          resumoHtml += `<tr><td>Osmar</td><td>Alinhamento</td><td>${dadosAtuaisPeriodo.qtdAlinhamento} un</td><td>R$ 10,00 / un</td><td>R$ ${fmt(dadosAtuaisPeriodo.qtdAlinhamento * 10)}</td></tr>`;
+          resumoHtml += `<tr><td>Osmar</td><td>Camber</td><td>${dadosAtuaisPeriodo.qtdCamber} un</td><td>R$ 10,00 / un</td><td>R$ ${fmt(dadosAtuaisPeriodo.qtdCamber * 10)}</td></tr>`;
+          resumoHtml += `<tr><td>Osmar</td><td>Caster</td><td>${dadosAtuaisPeriodo.qtdCaster} un</td><td>R$ 10,00 / un</td><td>R$ ${fmt(dadosAtuaisPeriodo.qtdCaster * 10)}</td></tr>`;
+          resumoHtml += `<tr style="background:#f3f4f6; font-weight:bold;"><td colspan="4">TOTAL OSMAR</td><td>R$ ${fmt(dadosAtuaisPeriodo.comissaoOsmar)}</td></tr>`;
+        }
+        if (func === "todos" || func === "gustavo") {
+          resumoHtml += `<tr><td>Gustavo</td><td>Mecânicas</td><td>${dadosAtuaisPeriodo.qtdMecanicas} un</td><td>30% do Faturamento</td><td>R$ ${fmt(dadosAtuaisPeriodo.comissaoGustavo)}</td></tr>`;
+          resumoHtml += `<tr style="background:#f3f4f6; font-weight:bold;"><td colspan="4">TOTAL GUSTAVO</td><td>R$ ${fmt(dadosAtuaisPeriodo.comissaoGustavo)}</td></tr>`;
+        }
+        document.getElementById("pdfResumoTbody").innerHTML = resumoHtml;
+
+        let detalhesHtml = "";
+        let detalhesFiltrados = dadosAtuaisPeriodo.listaDetalhada;
+        if (func === "osmar")
+          detalhesFiltrados = detalhesFiltrados.filter(
+            (i) =>
+              i.servico.toUpperCase().includes("ALINHAMENTO") ||
+              i.servico.toUpperCase().includes("CAMBER") ||
+              i.servico.toUpperCase().includes("CASTER"),
+          );
+        if (func === "gustavo")
+          detalhesFiltrados = detalhesFiltrados.filter(
+            (i) =>
+              i.servico.toUpperCase().includes("MECANICA") ||
+              i.servico.toUpperCase().includes("MECÂNICA"),
+          );
+
+        detalhesFiltrados.forEach((item) => {
+          detalhesHtml += `<tr><td>${new Date(item.data).toLocaleDateString("pt-BR")}</td><td>${item.servico}</td><td>${item.quantidade}</td><td>R$ ${item.valor.toFixed(2).replace(".", ",")}</td></tr>`;
+        });
+        document.getElementById("pdfDetalhesTbody").innerHTML = detalhesHtml;
+
+        window.print();
+      }
+
+      // ================= IMPRESSÃO: RELATÓRIO SIMPLES =================
+      function imprimirRelatorioSimples() {
+        if (!dadosAtuaisPeriodo) {
+          alert("Filtre os dados antes.");
+          return;
+        }
+
+        document
+          .querySelectorAll(".pdf-container")
+          .forEach((el) => el.classList.remove("ativo"));
+        document.getElementById("pdfRelatorioSimples").classList.add("ativo");
+
+        const func = selFuncionario.value;
+        const dataFormatadaInicio = inpInicio.value
+          .split("-")
+          .reverse()
+          .join("/");
+        const dataFormatadaFim = inpFim.value.split("-").reverse().join("/");
+        document.getElementById("pdfPeriodoSimples").textContent =
+          `Período: ${dataFormatadaInicio} até ${dataFormatadaFim}`;
+
+        let nomeFunc = "Todos os Funcionários";
+        if (func === "osmar") nomeFunc = "Osmar";
+        if (func === "gustavo") nomeFunc = "Gustavo";
+        document.getElementById("pdfFuncionarioSimples").textContent =
+          `Funcionário: ${nomeFunc}`;
+
+        const fmt = (val) =>
+          val.toLocaleString("pt-BR", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          });
+        let conteudoHtml = "";
+
+        if (func === "todos" || func === "osmar") {
+          conteudoHtml += `<h3 style="font-weight:bold; border-bottom: 2px solid #000; padding-bottom:4px; margin-bottom:8px;">Osmar</h3>`;
+          if (dadosAtuaisPeriodo.qtdAlinhamento > 0)
+            conteudoHtml += `<div class="relatorio-simples-linha"><span>${dadosAtuaisPeriodo.qtdAlinhamento}x Alinhamento (R$ 10/un)</span><span>R$ ${fmt(dadosAtuaisPeriodo.qtdAlinhamento * 10)}</span></div>`;
+          if (dadosAtuaisPeriodo.qtdCamber > 0)
+            conteudoHtml += `<div class="relatorio-simples-linha"><span>${dadosAtuaisPeriodo.qtdCamber}x Camber (R$ 10/un)</span><span>R$ ${fmt(dadosAtuaisPeriodo.qtdCamber * 10)}</span></div>`;
+          if (dadosAtuaisPeriodo.qtdCaster > 0)
+            conteudoHtml += `<div class="relatorio-simples-linha"><span>${dadosAtuaisPeriodo.qtdCaster}x Caster (R$ 10/un)</span><span>R$ ${fmt(dadosAtuaisPeriodo.qtdCaster * 10)}</span></div>`;
+
+          conteudoHtml += `<div class="relatorio-simples-total" style="border:none; padding-top:4px;"><span>Subtotal Osmar:</span><span>R$ ${fmt(dadosAtuaisPeriodo.comissaoOsmar)}</span></div>`;
+          if (func === "todos") conteudoHtml += `<br>`; // espaço entre os blocos
+        }
+
+        if (func === "todos" || func === "gustavo") {
+          conteudoHtml += `<h3 style="font-weight:bold; border-bottom: 2px solid #000; padding-bottom:4px; margin-bottom:8px; margin-top:15px;">Gustavo</h3>`;
+          conteudoHtml += `<div class="relatorio-simples-linha"><span>${dadosAtuaisPeriodo.qtdMecanicas}x Mecânica Realizada</span><span>Base: R$ ${fmt(dadosAtuaisPeriodo.valorMecanicaBruto)}</span></div>`;
+          conteudoHtml += `<div class="relatorio-simples-linha"><span>Porcentagem da Comissão</span><span>30%</span></div>`;
+          conteudoHtml += `<div class="relatorio-simples-total" style="border:none; padding-top:4px;"><span>Subtotal Gustavo:</span><span>R$ ${fmt(dadosAtuaisPeriodo.comissaoGustavo)}</span></div>`;
+        }
+
+        // Total Geral no final (se for todos)
+        if (func === "todos") {
+          const totalGeral =
+            dadosAtuaisPeriodo.comissaoOsmar +
+            dadosAtuaisPeriodo.comissaoGustavo;
+          conteudoHtml += `<div class="relatorio-simples-total" style="font-size: 20px; border-top: 2px solid #000; margin-top: 20px; padding-top: 10px;"><span>TOTAL GERAL:</span><span>R$ ${fmt(totalGeral)}</span></div>`;
+        }
+
+        document.getElementById("relatorioSimplesConteudo").innerHTML =
+          conteudoHtml;
+        window.print();
+      }
+
       btnFiltrar.addEventListener("click", carregarMetricas);
+      btnExportar.addEventListener("click", exportarCSV);
+      btnImprimir.addEventListener("click", imprimirPlanilha);
+      btnRelatorioSimples.addEventListener("click", imprimirRelatorioSimples);
+      selFuncionario.addEventListener("change", aplicarFiltroVisual);
+
+      aplicarFiltroVisual();
       carregarMetricas();
     </script>
   </body>
