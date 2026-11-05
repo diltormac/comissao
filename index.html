@@ -3,380 +3,168 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dashboard Geral - OS Fácil | Auto Center</title>
+    <title>Dashboard - OS Fácil</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Orbitron:wght@600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            fontFamily: {
-              sans: ["Inter", "sans-serif"],
-              display: ["Orbitron", "sans-serif"],
-            },
-            colors: {
-              workshop: {
-                950: "#0a0a0b",
-                900: "#121214",
-                800: "#1c1c1f",
-                700: "#2a2a2e",
-                600: "#3f3f46",
-              },
-            },
-          },
-        },
-      };
-    </script>
     <style>
       body {
-        background: linear-gradient(145deg, #0a0a0b 0%, #151518 50%, #0f0f12 100%);
+        font-family: "Inter", system-ui, sans-serif;
+        background: #0c0c0e;
         min-height: 100vh;
       }
-      .card-glow {
-        box-shadow:
-          0 0 0 1px rgba(255, 255, 255, 0.05),
-          0 10px 30px -10px rgba(0, 0, 0, 0.6);
+      .card {
+        background: #161618;
+        border: 1px solid rgba(255, 255, 255, 0.06);
       }
-      .metric-value {
-        font-variant-numeric: tabular-nums;
-      }
-      .filter-input::-webkit-calendar-picker-indicator {
-        filter: invert(0.8);
-        cursor: pointer;
-      }
-      /* Evita zoom indesejado em inputs no iOS */
       input[type="date"] {
-        font-size: 16px;
+        font-size: 15px;
+        color-scheme: dark;
+      }
+      input[type="date"]::-webkit-calendar-picker-indicator {
+        filter: invert(0.7);
       }
     </style>
   </head>
-  <body class="text-slate-200 antialiased">
-    <div class="max-w-6xl mx-auto px-3 sm:px-4 py-4 sm:py-6 md:py-10">
-      <!-- Header -->
-      <header
-        class="bg-workshop-900/80 backdrop-blur-md border border-white/5 rounded-2xl sm:rounded-3xl p-4 sm:p-5 md:p-6 mb-6 sm:mb-8 card-glow"
-      >
-        <div class="flex flex-col gap-4 sm:gap-5">
-          <!-- Logo + título -->
-          <div class="flex items-center gap-3 sm:gap-4">
-            <div
-              class="w-11 h-11 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl bg-gradient-to-br from-orange-500 to-amber-600 flex items-center justify-center shadow-lg shadow-orange-500/20 flex-shrink-0"
-            >
-              <i class="fa-solid fa-car-burst text-xl sm:text-2xl text-white"></i>
-            </div>
-            <div class="min-w-0">
-              <h1
-                class="font-display text-xl sm:text-2xl md:text-3xl font-bold tracking-tight text-white truncate"
-              >
-                OS <span class="text-orange-500">Fácil</span>
-              </h1>
-              <p class="text-xs sm:text-sm text-slate-400 mt-0.5">
-                Dashboard de Serviços · Auto Center
-              </p>
-            </div>
+  <body class="text-slate-200">
+    <div class="max-w-5xl mx-auto px-3 py-3 sm:py-4">
+      <!-- Header compacto -->
+      <div class="card rounded-xl p-3 mb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-lg bg-orange-500 flex items-center justify-center flex-shrink-0">
+            <i class="fa-solid fa-car-burst text-white text-sm"></i>
           </div>
-
-          <!-- Filtros -->
-          <div
-            class="flex flex-col xs:flex-row flex-wrap items-stretch sm:items-center gap-2 sm:gap-3 bg-workshop-800/60 border border-white/5 rounded-xl sm:rounded-2xl p-2.5"
-          >
-            <div class="flex items-center gap-2 flex-1 min-w-0">
-              <i class="fa-regular fa-calendar text-orange-400 text-sm flex-shrink-0 hidden sm:block"></i>
-              <input
-                type="date"
-                id="dataInicio"
-                class="filter-input bg-workshop-700/50 sm:bg-transparent border border-white/5 sm:border-0 rounded-lg sm:rounded-none px-2.5 py-2 text-sm text-slate-200 outline-none focus:ring-1 focus:ring-orange-500/50 w-full min-w-0"
-              />
-              <span class="text-slate-500 text-xs font-medium flex-shrink-0">até</span>
-              <input
-                type="date"
-                id="dataFim"
-                class="filter-input bg-workshop-700/50 sm:bg-transparent border border-white/5 sm:border-0 rounded-lg sm:rounded-none px-2.5 py-2 text-sm text-slate-200 outline-none focus:ring-1 focus:ring-orange-500/50 w-full min-w-0"
-              />
-            </div>
-            <button
-              id="btnFiltrar"
-              class="bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-400 hover:to-amber-400 text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg shadow-orange-500/20 active:scale-[0.98] w-full sm:w-auto"
-            >
-              <i class="fa-solid fa-filter"></i>
-              Filtrar
-            </button>
+          <div>
+            <h1 class="text-base font-bold text-white leading-tight">OS Fácil</h1>
+            <p class="text-[11px] text-slate-500">Dashboard · Auto Center</p>
           </div>
         </div>
-      </header>
+
+        <div class="flex items-center gap-1.5 flex-wrap">
+          <input
+            type="date"
+            id="dataInicio"
+            class="bg-[#1e1e22] border border-white/10 rounded-lg px-2 py-1.5 text-xs text-slate-200 outline-none focus:border-orange-500 w-[118px]"
+          />
+          <span class="text-slate-600 text-[11px]">–</span>
+          <input
+            type="date"
+            id="dataFim"
+            class="bg-[#1e1e22] border border-white/10 rounded-lg px-2 py-1.5 text-xs text-slate-200 outline-none focus:border-orange-500 w-[118px]"
+          />
+          <button
+            id="btnFiltrar"
+            class="bg-orange-500 hover:bg-orange-600 text-white text-xs font-semibold px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition-colors"
+          >
+            <i class="fa-solid fa-filter text-[10px]"></i>
+            Filtrar
+          </button>
+        </div>
+      </div>
 
       <!-- OSMAR -->
-      <section class="mb-8 sm:mb-10">
-        <div class="flex items-center gap-3 mb-4 sm:mb-5">
-          <div
-            class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-indigo-500/15 border border-indigo-400/20 flex items-center justify-center flex-shrink-0"
-          >
-            <i class="fa-solid fa-user-tie text-indigo-400 text-sm sm:text-base"></i>
+      <div class="mb-3">
+        <div class="flex items-center gap-2 mb-2">
+          <i class="fa-solid fa-user-tie text-indigo-400 text-xs"></i>
+          <h2 class="text-xs font-semibold text-slate-400 uppercase tracking-wide">Osmar · Geometria</h2>
+        </div>
+
+        <div class="grid grid-cols-3 gap-2 mb-2">
+          <div class="card rounded-xl p-2.5 sm:p-3 text-center">
+            <div class="w-8 h-8 rounded-lg bg-indigo-500/15 flex items-center justify-center mx-auto mb-1.5">
+              <i class="fa-solid fa-car-side text-indigo-400 text-sm"></i>
+            </div>
+            <p class="text-[10px] text-slate-500 uppercase mb-0.5">Alinhamento</p>
+            <p id="osmarAlinhamento" class="text-xl sm:text-2xl font-bold text-white">0</p>
           </div>
-          <div class="min-w-0">
-            <h2 class="text-base sm:text-lg font-bold text-white tracking-tight">
-              Painel do Osmar
-            </h2>
-            <p class="text-[11px] sm:text-xs text-slate-500 truncate">
-              Geometria · Alinhamento · Camber · Caster
-            </p>
+
+          <div class="card rounded-xl p-2.5 sm:p-3 text-center">
+            <div class="w-8 h-8 rounded-lg bg-amber-500/15 flex items-center justify-center mx-auto mb-1.5">
+              <i class="fa-solid fa-sliders text-amber-400 text-sm"></i>
+            </div>
+            <p class="text-[10px] text-slate-500 uppercase mb-0.5">Camber</p>
+            <p id="osmarCamber" class="text-xl sm:text-2xl font-bold text-white">0</p>
+          </div>
+
+          <div class="card rounded-xl p-2.5 sm:p-3 text-center">
+            <div class="w-8 h-8 rounded-lg bg-emerald-500/15 flex items-center justify-center mx-auto mb-1.5">
+              <i class="fa-solid fa-gauge-high text-emerald-400 text-sm"></i>
+            </div>
+            <p class="text-[10px] text-slate-500 uppercase mb-0.5">Caster</p>
+            <p id="osmarCaster" class="text-xl sm:text-2xl font-bold text-white">0</p>
           </div>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-3 sm:mb-4">
-          <!-- Alinhamento -->
-          <div
-            class="bg-workshop-900 border border-white/5 rounded-2xl p-4 sm:p-5 card-glow"
-          >
-            <div class="flex items-start justify-between mb-3 sm:mb-4">
-              <div
-                class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-indigo-500/10 border border-indigo-400/20 flex items-center justify-center"
-              >
-                <i class="fa-solid fa-car-side text-lg sm:text-xl text-indigo-400"></i>
-              </div>
-              <span
-                class="text-[10px] font-bold uppercase tracking-widest text-indigo-400/80 bg-indigo-500/10 px-2 py-1 rounded-md"
-                >Geometria</span
-              >
-            </div>
-            <p class="text-xs font-medium text-slate-500 uppercase tracking-wider mb-1">
-              Alinhamento
-            </p>
-            <p
-              id="osmarAlinhamento"
-              class="metric-value text-3xl sm:text-4xl font-extrabold text-white"
-            >
-              0
-            </p>
-          </div>
-
-          <!-- Camber -->
-          <div
-            class="bg-workshop-900 border border-white/5 rounded-2xl p-4 sm:p-5 card-glow"
-          >
-            <div class="flex items-start justify-between mb-3 sm:mb-4">
-              <div
-                class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-amber-500/10 border border-amber-400/20 flex items-center justify-center"
-              >
-                <i class="fa-solid fa-sliders text-lg sm:text-xl text-amber-400"></i>
-              </div>
-              <span
-                class="text-[10px] font-bold uppercase tracking-widest text-amber-400/80 bg-amber-500/10 px-2 py-1 rounded-md"
-                >Ângulo</span
-              >
-            </div>
-            <p class="text-xs font-medium text-slate-500 uppercase tracking-wider mb-1">
-              Camber
-            </p>
-            <p
-              id="osmarCamber"
-              class="metric-value text-3xl sm:text-4xl font-extrabold text-white"
-            >
-              0
-            </p>
-          </div>
-
-          <!-- Caster -->
-          <div
-            class="bg-workshop-900 border border-white/5 rounded-2xl p-4 sm:p-5 card-glow"
-          >
-            <div class="flex items-start justify-between mb-3 sm:mb-4">
-              <div
-                class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-emerald-500/10 border border-emerald-400/20 flex items-center justify-center"
-              >
-                <i class="fa-solid fa-gauge-high text-lg sm:text-xl text-emerald-400"></i>
-              </div>
-              <span
-                class="text-[10px] font-bold uppercase tracking-widest text-emerald-400/80 bg-emerald-500/10 px-2 py-1 rounded-md"
-                >Direção</span
-              >
-            </div>
-            <p class="text-xs font-medium text-slate-500 uppercase tracking-wider mb-1">
-              Caster
-            </p>
-            <p
-              id="osmarCaster"
-              class="metric-value text-3xl sm:text-4xl font-extrabold text-white"
-            >
-              0
-            </p>
-          </div>
-        </div>
-
-        <!-- Comissão Osmar -->
-        <div
-          class="relative overflow-hidden bg-gradient-to-r from-indigo-600 via-indigo-500 to-violet-600 rounded-2xl p-4 sm:p-5 md:p-6 flex flex-col gap-3 sm:gap-4 shadow-xl shadow-indigo-900/40"
-        >
-          <div
-            class="absolute inset-0 opacity-40 pointer-events-none"
-            style="background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDM0djItaDJ2LTJoLTJ6bTAtNHYyaDJ2LTJoLTJ6bTAtNHYyaDJ2LTJoLTJ6bTAtNHYyaDJ2LTJoLTJ6bTAtNHYyaDJ2LTJoLTJ6bTAtNHYyaDJ2LTJoLTJ6bTAtNHYyaDJ2LTJoLTJ6bTAtNHYyaDJ2LTJoLTJ6bTAtNHYyaDJ2LTJoLTJ6bTAtNHYyaDJ2LTJoLTJ6Ii8+PC9nPjwvZz48L3N2Zz4=')"
-          ></div>
-          <div class="relative flex items-center gap-3 sm:gap-4">
-            <div
-              class="w-12 h-12 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl bg-white/15 backdrop-blur flex items-center justify-center flex-shrink-0"
-            >
-              <i class="fa-solid fa-money-bill-wave text-xl sm:text-2xl text-white"></i>
-            </div>
+        <div class="bg-indigo-600 rounded-xl px-3 py-2.5 flex items-center justify-between gap-2">
+          <div class="flex items-center gap-2 min-w-0">
+            <i class="fa-solid fa-money-bill-wave text-indigo-200 text-sm flex-shrink-0"></i>
             <div class="min-w-0">
-              <p
-                class="text-[11px] sm:text-xs font-semibold uppercase tracking-widest text-indigo-100/80 mb-0.5 sm:mb-1"
-              >
-                Comissão Total · Osmar
-              </p>
-              <p
-                class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white metric-value truncate"
-              >
+              <p class="text-[10px] text-indigo-200 uppercase leading-none mb-0.5">Comissão Osmar</p>
+              <p class="text-lg sm:text-xl font-bold text-white truncate">
                 R$ <span id="osmarComissaoTotal">0,00</span>
               </p>
             </div>
           </div>
-          <div
-            class="relative text-xs sm:text-sm font-medium text-indigo-100 bg-black/20 backdrop-blur px-3 py-2 rounded-xl border border-white/10 w-full sm:w-auto text-center sm:text-left"
-          >
-            <i class="fa-solid fa-calculator mr-1.5 opacity-70"></i>
-            Soma dos serviços × R$ 10,00
-          </div>
+          <p class="text-[10px] text-indigo-200/80 whitespace-nowrap hidden xs:block">× R$ 10</p>
         </div>
-      </section>
+      </div>
 
       <!-- GUSTAVO -->
-      <section>
-        <div class="flex items-center gap-3 mb-4 sm:mb-5">
-          <div
-            class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-emerald-500/15 border border-emerald-400/20 flex items-center justify-center flex-shrink-0"
-          >
-            <i class="fa-solid fa-user-ninja text-emerald-400 text-sm sm:text-base"></i>
+      <div>
+        <div class="flex items-center gap-2 mb-2">
+          <i class="fa-solid fa-wrench text-emerald-400 text-xs"></i>
+          <h2 class="text-xs font-semibold text-slate-400 uppercase tracking-wide">Gustavo · Mecânica</h2>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2 mb-2">
+          <div class="card rounded-xl p-2.5 sm:p-3">
+            <div class="flex items-center gap-2 mb-1.5">
+              <div class="w-8 h-8 rounded-lg bg-emerald-500/15 flex items-center justify-center flex-shrink-0">
+                <i class="fa-solid fa-screwdriver-wrench text-emerald-400 text-sm"></i>
+              </div>
+              <p class="text-[10px] text-slate-500 uppercase leading-tight">Mecânicas</p>
+            </div>
+            <p id="gustavoQtdMecanica" class="text-xl sm:text-2xl font-bold text-white">0</p>
           </div>
-          <div class="min-w-0">
-            <h2 class="text-base sm:text-lg font-bold text-white tracking-tight">
-              Painel do Gustavo
-            </h2>
-            <p class="text-[11px] sm:text-xs text-slate-500">
-              Mecânica · Serviços Gerais
-            </p>
+
+          <div class="card rounded-xl p-2.5 sm:p-3">
+            <div class="flex items-center gap-2 mb-1.5">
+              <div class="w-8 h-8 rounded-lg bg-slate-500/15 flex items-center justify-center flex-shrink-0">
+                <i class="fa-solid fa-receipt text-slate-400 text-sm"></i>
+              </div>
+              <p class="text-[10px] text-slate-500 uppercase leading-tight">Faturamento</p>
+            </div>
+            <p id="gustavoBruto" class="text-base sm:text-lg font-bold text-white">R$ 0,00</p>
           </div>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-3 sm:mb-4">
-          <!-- Qtd Mecânicas -->
-          <div
-            class="bg-workshop-900 border border-white/5 rounded-2xl p-4 sm:p-5 card-glow"
-          >
-            <div class="flex items-start justify-between mb-3 sm:mb-4">
-              <div
-                class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-emerald-500/10 border border-emerald-400/20 flex items-center justify-center"
-              >
-                <i class="fa-solid fa-wrench text-lg sm:text-xl text-emerald-400"></i>
-              </div>
-              <span
-                class="text-[10px] font-bold uppercase tracking-widest text-emerald-400/80 bg-emerald-500/10 px-2 py-1 rounded-md"
-                >Serviços</span
-              >
-            </div>
-            <p class="text-xs font-medium text-slate-500 uppercase tracking-wider mb-1">
-              Mecânicas Realizadas
-            </p>
-            <p
-              id="gustavoQtdMecanica"
-              class="metric-value text-3xl sm:text-4xl font-extrabold text-white"
-            >
-              0
-            </p>
-          </div>
-
-          <!-- Faturamento Bruto -->
-          <div
-            class="bg-workshop-900 border border-white/5 rounded-2xl p-4 sm:p-5 card-glow"
-          >
-            <div class="flex items-start justify-between mb-3 sm:mb-4">
-              <div
-                class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-slate-500/10 border border-slate-400/20 flex items-center justify-center"
-              >
-                <i class="fa-solid fa-cash-register text-lg sm:text-xl text-slate-300"></i>
-              </div>
-              <span
-                class="text-[10px] font-bold uppercase tracking-widest text-slate-400/80 bg-slate-500/10 px-2 py-1 rounded-md"
-                >Receita</span
-              >
-            </div>
-            <p class="text-xs font-medium text-slate-500 uppercase tracking-wider mb-1">
-              Faturamento Bruto
-            </p>
-            <p
-              id="gustavoBruto"
-              class="metric-value text-2xl sm:text-3xl font-extrabold text-white"
-            >
-              R$ 0,00
-            </p>
-          </div>
-        </div>
-
-        <!-- Comissão Gustavo -->
-        <div
-          class="relative overflow-hidden bg-gradient-to-r from-emerald-600 via-emerald-500 to-teal-500 rounded-2xl p-4 sm:p-5 md:p-6 flex flex-col gap-3 sm:gap-4 shadow-xl shadow-emerald-900/40"
-        >
-          <div
-            class="absolute inset-0 opacity-40 pointer-events-none"
-            style="background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDM0djItaDJ2LTJoLTJ6bTAtNHYyaDJ2LTJoLTJ6bTAtNHYyaDJ2LTJoLTJ6bTAtNHYyaDJ2LTJoLTJ6bTAtNHYyaDJ2LTJoLTJ6bTAtNHYyaDJ2LTJoLTJ6bTAtNHYyaDJ2LTJoLTJ6bTAtNHYyaDJ2LTJoLTJ6bTAtNHYyaDJ2LTJoLTJ6bTAtNHYyaDJ2LTJoLTJ6Ii8+PC9nPjwvZz48L3N2Zz4=')"
-          ></div>
-          <div class="relative flex items-center gap-3 sm:gap-4">
-            <div
-              class="w-12 h-12 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl bg-white/15 backdrop-blur flex items-center justify-center flex-shrink-0"
-            >
-              <i class="fa-solid fa-money-bill-wave text-xl sm:text-2xl text-white"></i>
-            </div>
+        <div class="bg-emerald-600 rounded-xl px-3 py-2.5 flex items-center justify-between gap-2">
+          <div class="flex items-center gap-2 min-w-0">
+            <i class="fa-solid fa-money-bill-wave text-emerald-200 text-sm flex-shrink-0"></i>
             <div class="min-w-0">
-              <p
-                class="text-[11px] sm:text-xs font-semibold uppercase tracking-widest text-emerald-100/80 mb-0.5 sm:mb-1"
-              >
-                Comissão · Gustavo (30%)
-              </p>
-              <p
-                id="gustavoComissao"
-                class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white metric-value truncate"
-              >
-                R$ 0,00
-              </p>
+              <p class="text-[10px] text-emerald-200 uppercase leading-none mb-0.5">Comissão Gustavo (30%)</p>
+              <p id="gustavoComissao" class="text-lg sm:text-xl font-bold text-white truncate">R$ 0,00</p>
             </div>
           </div>
-          <div
-            class="relative text-xs sm:text-sm font-medium text-emerald-100 bg-black/20 backdrop-blur px-3 py-2 rounded-xl border border-white/10 w-full sm:w-auto text-center sm:text-left"
-          >
-            <i class="fa-solid fa-percent mr-1.5 opacity-70"></i>
-            Faturamento Bruto × 30%
-          </div>
+          <p class="text-[10px] text-emerald-200/80 whitespace-nowrap hidden xs:block">30%</p>
         </div>
-      </section>
+      </div>
 
       <!-- Status -->
-      <div
-        id="mensagemStatus"
-        class="mt-6 sm:mt-8 text-center text-sm font-medium hidden px-2"
-      ></div>
-
-      <!-- Footer -->
-      <footer class="mt-10 sm:mt-12 pt-5 sm:pt-6 border-t border-white/5 text-center">
-        <p class="text-[11px] sm:text-xs text-slate-600">
-          OS Fácil · Auto Center · Métricas de equipe
-        </p>
-      </footer>
+      <div id="mensagemStatus" class="mt-3 text-center text-xs font-medium hidden"></div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
       const supabaseUrl = "https://kiiswukzwwoznkgjyaod.supabase.co";
       const supabaseKey = "sb_publishable_WPRvraB-40Fz1RuKbd5bRg_3tGvyAxg";
-      const supabaseClient = window.supabase.createClient(
-        supabaseUrl,
-        supabaseKey,
-      );
+      const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
 
       const inpInicio = document.getElementById("dataInicio");
       const inpFim = document.getElementById("dataFim");
@@ -386,25 +174,17 @@
       const elOsmarAlinhamento = document.getElementById("osmarAlinhamento");
       const elOsmarCamber = document.getElementById("osmarCamber");
       const elOsmarCaster = document.getElementById("osmarCaster");
-      const elOsmarComissaoTotal =
-        document.getElementById("osmarComissaoTotal");
-
+      const elOsmarComissaoTotal = document.getElementById("osmarComissaoTotal");
       const elGustavoComissao = document.getElementById("gustavoComissao");
       const elGustavoBruto = document.getElementById("gustavoBruto");
-      const elGustavoQtdMecanica =
-        document.getElementById("gustavoQtdMecanica");
+      const elGustavoQtdMecanica = document.getElementById("gustavoQtdMecanica");
 
       const hoje = new Date();
-      inpInicio.value = new Date(hoje.getFullYear(), hoje.getMonth(), 1)
-        .toISOString()
-        .split("T")[0];
-      inpFim.value = new Date(hoje.getFullYear(), hoje.getMonth() + 1, 0)
-        .toISOString()
-        .split("T")[0];
+      inpInicio.value = new Date(hoje.getFullYear(), hoje.getMonth(), 1).toISOString().split("T")[0];
+      inpFim.value = new Date(hoje.getFullYear(), hoje.getMonth() + 1, 0).toISOString().split("T")[0];
 
       async function carregarMetricas() {
-        btnFiltrar.innerHTML =
-          '<i class="fa-solid fa-spinner fa-spin"></i> Buscando...';
+        btnFiltrar.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-[10px]"></i>';
         btnFiltrar.disabled = true;
         msgStatus.classList.add("hidden");
 
@@ -424,21 +204,13 @@
           let qtdMecanicas = 0;
 
           (data || []).forEach((os) => {
-            const itens = Array.isArray(os.itens_servicos)
-              ? os.itens_servicos
-              : [];
-
+            const itens = Array.isArray(os.itens_servicos) ? os.itens_servicos : [];
             itens.forEach((item) => {
               const nomeServico = String(item.servico || "").toUpperCase();
-
               if (nomeServico.includes("ALINHAMENTO")) qtdAlinhamento++;
               if (nomeServico.includes("CAMBER")) qtdCamber++;
               if (nomeServico.includes("CASTER")) qtdCaster++;
-
-              if (
-                nomeServico.includes("MECANICA") ||
-                nomeServico.includes("MECÂNICA")
-              ) {
+              if (nomeServico.includes("MECANICA") || nomeServico.includes("MECÂNICA")) {
                 valorMecanicaBruto += Number(item.valor) || 0;
                 qtdMecanicas++;
               }
@@ -449,32 +221,28 @@
           elOsmarCamber.textContent = qtdCamber;
           elOsmarCaster.textContent = qtdCaster;
 
-          const qtdTotalOsmar = qtdAlinhamento + qtdCamber + qtdCaster;
-          const comissaoOsmar = qtdTotalOsmar * 10;
-          elOsmarComissaoTotal.textContent = comissaoOsmar.toLocaleString(
-            "pt-BR",
-            { minimumFractionDigits: 2, maximumFractionDigits: 2 },
-          );
+          const comissaoOsmar = (qtdAlinhamento + qtdCamber + qtdCaster) * 10;
+          elOsmarComissaoTotal.textContent = comissaoOsmar.toLocaleString("pt-BR", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          });
 
           const comissaoGustavo = valorMecanicaBruto * 0.3;
-
-          elGustavoComissao.textContent = comissaoGustavo.toLocaleString(
-            "pt-BR",
-            { style: "currency", currency: "BRL" },
-          );
-          elGustavoBruto.textContent = valorMecanicaBruto.toLocaleString(
-            "pt-BR",
-            { style: "currency", currency: "BRL" },
-          );
+          elGustavoComissao.textContent = comissaoGustavo.toLocaleString("pt-BR", {
+            style: "currency",
+            currency: "BRL",
+          });
+          elGustavoBruto.textContent = valorMecanicaBruto.toLocaleString("pt-BR", {
+            style: "currency",
+            currency: "BRL",
+          });
           elGustavoQtdMecanica.textContent = qtdMecanicas;
         } catch (err) {
           console.error(err);
-          msgStatus.textContent = "Erro ao buscar os dados: " + err.message;
-          msgStatus.className =
-            "mt-6 sm:mt-8 text-center text-sm font-medium text-red-400 block px-2";
+          msgStatus.textContent = "Erro: " + err.message;
+          msgStatus.className = "mt-3 text-center text-xs font-medium text-red-400 block";
         } finally {
-          btnFiltrar.innerHTML =
-            '<i class="fa-solid fa-filter"></i> Filtrar';
+          btnFiltrar.innerHTML = '<i class="fa-solid fa-filter text-[10px]"></i> Filtrar';
           btnFiltrar.disabled = false;
         }
       }
