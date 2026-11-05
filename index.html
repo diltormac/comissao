@@ -207,12 +207,17 @@
             const itens = Array.isArray(os.itens_servicos) ? os.itens_servicos : [];
             itens.forEach((item) => {
               const nomeServico = String(item.servico || "").toUpperCase();
-              if (nomeServico.includes("ALINHAMENTO")) qtdAlinhamento++;
-              if (nomeServico.includes("CAMBER")) qtdCamber++;
-              if (nomeServico.includes("CASTER")) qtdCaster++;
+              
+              // CORREÇÃO: Pega a quantidade real do item (se não existir, assume 1)
+              const qtdItem = Number(item.quantidade) || 1;
+              
+              if (nomeServico.includes("ALINHAMENTO")) qtdAlinhamento += qtdItem;
+              if (nomeServico.includes("CAMBER")) qtdCamber += qtdItem;
+              if (nomeServico.includes("CASTER")) qtdCaster += qtdItem;
+              
               if (nomeServico.includes("MECANICA") || nomeServico.includes("MECÂNICA")) {
                 valorMecanicaBruto += Number(item.valor) || 0;
-                qtdMecanicas++;
+                qtdMecanicas += qtdItem;
               }
             });
           });
